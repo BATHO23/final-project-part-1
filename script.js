@@ -91,12 +91,20 @@ currentLocationButton.addEventListener("click", function () {
   }
 });
 
+// Function to update time and date
+function updateTimeAndDate() {
+  const now = new Date();
+  document.getElementById("current-time").textContent =
+    now.toLocaleTimeString();
+  document.getElementById("current-date").textContent =
+    now.toLocaleDateString();
+}
+
 // Update time and date every second
 setInterval(updateTimeAndDate, 1000);
 
 updateTimeAndDate(); // Initial call to display time and date immediately
-// Function to convert temperature between Celsius and Fahrenheit
-}
+
 // Function to convert temperature between Celsius and Fahrenheit
 function convertTemperature() {
   const temperatureElement = document.getElementById("temperature");
