@@ -63,7 +63,7 @@ searchForm.addEventListener("submit", function (event) {
   fetchWeather(city);
   fetchForecast(city);
 });
-
+// Event listener for the current location button
 const currentLocationButton = document.getElementById("current-location");
 currentLocationButton.addEventListener("click", function () {
   if (navigator.geolocation) {
@@ -96,6 +96,8 @@ setInterval(updateTimeAndDate, 1000);
 
 updateTimeAndDate(); // Initial call to display time and date immediately
 // Function to convert temperature between Celsius and Fahrenheit
+}
+// Function to convert temperature between Celsius and Fahrenheit
 function convertTemperature() {
   const temperatureElement = document.getElementById("temperature");
   const tempValue = temperatureElement.textContent.trim().split(" ")[0];
@@ -115,10 +117,8 @@ document
   .addEventListener("click", convertTemperature);
 // Display current temperature, wind speed, and humidity in the search result
 function displaySearchResult(weatherData) {
-  document.getElementById('temperature').textContent = weatherData.temp + ' \'C';
-  document.getElementById('wind-speed').textContent = weatherData.speed + ' km/h';
-  document.getElementById('humidity').textContent = weatherData.humidity + '%';
+  document.getElementById("temperature").textContent = weatherData.temp + " 'C";
+  document.getElementById("wind-speed").textContent =
+    weatherData.speed + " km/h";
+  document.getElementById("humidity").textContent = weatherData.humidity + "%";
 }
-
-// Call this function with the relevant data after fetching the weather
-// Example usage: displaySearchResult({ temp: 26, speed: 15, humidity: 80 });
