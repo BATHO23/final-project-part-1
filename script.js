@@ -63,8 +63,9 @@ searchForm.addEventListener("submit", function (event) {
   fetchWeather(city);
   fetchForecast(city);
 });
-// Modify the current location button event listener to use the new function
-currentLocationButton.addEventListener('click', function () {
+
+const currentLocationButton = document.getElementById("current-location");
+currentLocationButton.addEventListener("click", function () {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(async function (position) {
       const { latitude, longitude } = position.coords;
@@ -75,27 +76,20 @@ currentLocationButton.addEventListener('click', function () {
         const weatherData = {
           temp: response.data.main.temp,
           speed: response.data.wind.speed,
-          humidity: response.data.main.humidity
+          humidity: response.data.main.humidity,
+          icon: response.data.weather[0].icon,
         };
         displayCurrentLocationResultsInCelsius(weatherData);
         fetchForecast(response.data.name);
-        document.getElementById('weather-result').style.display = 'block';
+        document.getElementById("weather-result").style.display = "block";
       } catch (error) {
-        console.error('Error fetching weather data:', error);
+        console.error("Error fetching weather data:", error);
       }
     });
   } else {
-    alert('Geolocation is not supported by this browser.');
+    alert("Geolocation is not supported by this browser.");
   }
 });
-// Function to update time and date
-function updateTimeAndDate() {
-  const now = new Date();
-  document.getElementById("current-time").textContent =
-    now.toLocaleTimeString();
-  document.getElementById("current-date").textContent =
-    now.toLocaleDateString();
-}
 
 // Update time and date every second
 setInterval(updateTimeAndDate, 1000);
