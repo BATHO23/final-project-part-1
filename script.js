@@ -65,18 +65,41 @@ searchForm.addEventListener("submit", function (event) {
 });
 
 // Event listener for the current location button
-const currentLocationButton = document.getElementById("current-location");
-currentLocationButton.addEventListener("click", function () {
+function convertTemperature() {
+  const temperatureElement = document.getElementById("temperature");
+  const tempValue = temperatureElement.textContent.trim().split(" ")[0];
+  let newTemp;
+  let unit;
+  if (temperatureElement.textContent.includes("C")) {
+    newTemp = (tempValue * 9) / 5 + 32;
+    unit = "F";
+  } else {
+    newTemp = ((tempValue - 32) * 5) / 9;;
+  }
+  displayConversionResult(newTemp, unit);
+  updateForecastTemperatures(unit);
+}
+//new code for the current location button and display result in HTML
+const currentLocationButton = document.getElementById('current-location');
+currentLocationButton.addEventListener('click', function () {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(async function (position) {
       const { latitude, longitude } = position.coords;
-      const response = await axios.get(
-        `${BASE_URL}weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`,
-      );
-      const city = response.data.name;
-      fetchWeather(city);
-      fetchForecast(city);
+      try {
+        const response = await axios.get(
+          `${BASE_URL}weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`,
+        );
+        const city = response.data.name;
+        fetchWeather(city);
+        fetchForecast(city);
+        // Display results in HTML
+        document.getElementById('weather-result').style.display = 'block';
+      } catch (error) {
+        console.error('Error fetching weather data:', error);
+      }
     });
+  } else {
+    alert('Geolocation is not supported by this browser.');
   }
 });
 
