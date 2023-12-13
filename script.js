@@ -63,24 +63,7 @@ searchForm.addEventListener("submit", function (event) {
   fetchWeather(city);
   fetchForecast(city);
 });
-
-// Event listener for the current location button
-function convertTemperature() {
-  const temperatureElement = document.getElementById("temperature");
-  const tempValue = temperatureElement.textContent.trim().split(" ")[0];
-  let newTemp;
-  let unit;
-  if (temperatureElement.textContent.includes("C")) {
-    newTemp = (tempValue * 9) / 5 + 32;
-    unit = "F";
-  } else {
-    newTemp = ((tempValue - 32) * 5) / 9;;
-  }
-  displayConversionResult(newTemp, unit);
-  updateForecastTemperatures(unit);
-}
-//new code for the current location button and display result in HTML
-const currentLocationButton = document.getElementById('current-location');
+// Modify the current location button event listener to use the new function
 currentLocationButton.addEventListener('click', function () {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(async function (position) {
@@ -89,10 +72,13 @@ currentLocationButton.addEventListener('click', function () {
         const response = await axios.get(
           `${BASE_URL}weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`,
         );
-        const city = response.data.name;
-        fetchWeather(city);
-        fetchForecast(city);
-        // Display results in HTML
+        const weatherData = {
+          temp: response.data.main.temp,
+          speed: response.data.wind.speed,
+          humidity: response.data.main.humidity
+        };
+        displayCurrentLocationResultsInCelsius(weatherData);
+        fetchForecast(response.data.name);
         document.getElementById('weather-result').style.display = 'block';
       } catch (error) {
         console.error('Error fetching weather data:', error);
@@ -102,7 +88,6 @@ currentLocationButton.addEventListener('click', function () {
     alert('Geolocation is not supported by this browser.');
   }
 });
-
 // Function to update time and date
 function updateTimeAndDate() {
   const now = new Date();
